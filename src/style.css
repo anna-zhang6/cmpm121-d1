@@ -1,13 +1,64 @@
+/* style sheet for consistency in main.ts */
+
 body {
   margin: 0;
+  background-color: #8fc775;
 }
 
 #app {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: center; /* horizontal centering */
+  justify-content: center; /* vertical centering */
   gap: 15px;
   text-align: center;
+}
+
+/* the flower you click */
+#app img {
+  cursor: pointer;
+  user-select: none; /* stops the image highlighting when you click fast */
+  -webkit-user-drag: none;
+  transition: filter 0.15s;
+}
+
+#app img:hover {
+  filter: brightness(1.08);
+}
+
+/* petal counters */
+#app p {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+/* button row */
+#app div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+#app button {
+  padding: 8px 14px;
+  border: 2px solid #5374d6;
+  border-radius: 8px;
+  background: #fff;
+  color: #5374d6;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+#app button:hover:not(:disabled) {
+  background: #5374d6;
+  color: #fff;
+}
+
+#app button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
