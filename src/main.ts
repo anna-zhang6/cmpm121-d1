@@ -4,24 +4,43 @@
 import flowerUrl from "./assets/flowerbutton.png?no-inline";
 
 const app = document.querySelector<HTMLElement>("#app")!;
+app.style.display = "flex";
+app.style.flexDirection = "column";
 
 const heading = document.createElement("h1");
+heading.style.margin = "0 auto 0 auto";
+
 heading.textContent = "Flower Flow";
 
 const image = document.createElement("img");
 image.src = flowerUrl;
 image.alt = "A rose flower";
-image.width = 150;
-image.height = 150;
+image.width = 300;
+image.height = 300;
+
+image.style.margin = "0 auto 0 auto";
+
+image.style.cursor = "pointer";
+image.draggable = false;
 
 //text element showcasing players total number of petals
 const currentPetals = document.createElement("p");
 currentPetals.textContent = "0 petals";
 
+currentPetals.style.margin = "0 auto 0 auto";
+
 //text element showcasing players total number of passive petals
 //passive petals == petals per second
 const passivePetals = document.createElement("p");
 passivePetals.textContent = "0 petals per seconds";
+
+passivePetals.style.margin = "0 auto 0 auto";
+
+// Container for the buttons
+const buttonContainer = document.createElement("div");
+buttonContainer.style.display = "flex";
+buttonContainer.style.width = "100%";
+buttonContainer.style.justifyContent = "center";
 
 //buttons for upgrade
 const upgrade = document.createElement("button");
@@ -33,7 +52,14 @@ upgradePass.innerText = "6 petals";
 const autoclicker = document.createElement("button");
 let autoClickers = 0; // how many the player owns
 
-const upgradeCost = { "pruner": 6, "gardener": 6, "autoclicker": 20 };
+//TODO make upgrades into data structure (inspired by Cassidy and Ray's pet dog game)
+const upgradeList = {
+  "watercan": 6,
+  "scarecrow": 5,
+  "gardengloves": 3,
+  "gardener": 20,
+  "finalupgrade(not named)": 30,
+};
 
 //number added to mouse click on image
 let clickBoost = 1;
@@ -51,6 +77,12 @@ app.append(
   image,
   currentPetals,
   passivePetals,
+  buttonContainer,
+);
+
+// Place new buttons inside here to have consistent styling and layout
+
+buttonContainer.append(
   upgrade,
   upgradePass,
   autoclicker,
@@ -91,13 +123,13 @@ requestAnimationFrame(autoClick);
 //updating text
 function updateText() {
   currentPetals.textContent = Math.floor(petalCounter) + " petals";
-  upgrade.disabled = petalCounter < upgradeCost.gardener;
-  upgradePass.disabled = petalCounter < upgradeCost.pruner;
-  upgrade.textContent = upgradeCost.gardener + " petals";
-  upgradePass.textContent = upgradeCost.pruner + " petals";
+  upgrade.disabled = petalCounter < upgradeList.gardener;
+  upgradePass.disabled = petalCounter < upgradeList.watercan;
+  upgrade.textContent = upgradeList.gardener + " petals";
+  upgradePass.textContent = upgradeList.watercan + " petals";
   autoclicker.textContent =
-    `Autoclicker (${autoClickers}): ${upgradeCost.autoclicker} petals`;
-  autoclicker.disabled = petalCounter < upgradeCost.autoclicker;
+    `Autoclicker (${autoClickers}): ${upgradeList.gardener} petals`;
+  autoclicker.disabled = petalCounter < upgradeList.gardener;
   requestAnimationFrame(updateText);
 }
 requestAnimationFrame(updateText);
@@ -108,19 +140,19 @@ image.addEventListener("click", () => {
 });
 
 upgrade.addEventListener("click", () => {
-  petalCounter -= upgradeCost.gardener;
+  petalCounter -= upgradeList.gardener;
   clickBoost++;
-  upgradeCost.gardener = Math.ceil(upgradeCost.gardener * 1.2);
+  upgradeList.gardener = Math.ceil(upgradeList.gardener * 1.2);
 });
 
 upgradePass.addEventListener("click", () => {
-  petalCounter -= upgradeCost.pruner;
+  petalCounter -= upgradeList.scarecrow;
   allPassives.push((x) => x + 0.1);
-  upgradeCost.pruner = Math.ceil(upgradeCost.pruner * 1.2);
+  upgradeList.scarecrow = Math.ceil(upgradeList.scarecrow * 1.2);
 });
 
 autoclicker.addEventListener("click", () => {
-  petalCounter -= upgradeCost.autoclicker;
+  petalCounter -= upgradeList.gardener;
   autoClickers++;
-  upgradeCost.autoclicker = Math.ceil(upgradeCost.autoclicker * 1.2);
+  upgradeList.gardener = Math.ceil(upgradeList.gardener * 1.2);
 });
