@@ -120,7 +120,7 @@ function updateText() {
   upgrade.textContent = upgradeCost.gardener + " petals";
   upgradePass.textContent = upgradeCost.pruner + " petals";
   autoclicker.textContent =
-    `Autoclicker (${autoClickers}): ${upgradeCost.autoclicker} petals`;
+    `AutoPicker (${autoClickers}): ${upgradeCost.autoclicker} petals`;
   autoclicker.disabled = petalCounter < upgradeCost.autoclicker;
   requestAnimationFrame(updateText);
 }
