@@ -80,7 +80,8 @@ let lastAuto = performance.now();
 function autoClick(now: number) {
   // runs once per second whenever you own at least one
   if (autoClickers > 0 && now - lastAuto >= 1000) {
-    petalCounter += autoPower;
+    // petalCounter += autoPower;
+    petalCounter += autoPower * autoClickers; // every autoclicker will add one
     lastAuto = now;
   }
   requestAnimationFrame(autoClick);
