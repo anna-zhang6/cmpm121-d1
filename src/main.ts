@@ -1,8 +1,12 @@
 // Vite turns this import into a production-safe URL. Keep it as a file so
 // even this tiny example demonstrates a separately deployed asset.
-// @deno-types="./asset-url.d.ts"
+//@deno-types="./asset-url.d.ts"
 import "./style.css";
 import flowerUrl from "./assets/flowerbutton.png?no-inline";
+import gloveUrl from "./assets/garderngloves.png?no-inline";
+import scarecrowUrl from "./assets/scarecrow.png?no-inline";
+import watercanUrl from "./assets/watercan.png?no-inline";
+import sprinklerUrl from "./assets/sprinkler.png?no-inline";
 
 const app = document.querySelector<HTMLElement>("#app")!;
 
@@ -35,31 +39,32 @@ const upgrade = document.createElement("button");
 
 //TODO make upgrades into data structure (inspired by Cassidy and Ray's pet dog game)
 const upgradeList = {
-  "watercan": 6,
-  "scarecrow": 5,
-  "gardengloves": 3,
-  "gardener": 20,
-  "finalupgrade(not named)": 30,
+  "gardengloves": gloveUrl,
+  "scarecrow": scarecrowUrl,
+  "watercan": watercanUrl,
+  "sprinkler": sprinklerUrl,
+  "gardener": 30,
 };
 
 //data structure for passive upgrades (increase petals per second)
 interface PassiveUpgrade {
   name: string;
   cost: number; // base price
-  rate: number; // petals/second added by each copy owned
+  passRate: number; // petals/second added by each copy owned
+  clickRate: number; //extra petals when clicked
   owned: number;
   button?: HTMLButtonElement;
 }
 
 //defines upgrades + their properties
 const passiveUpgrades: PassiveUpgrade[] = [
-  { name: "Watering can", cost: 5, rate: 0.1, owned: 0 },
-  { name: "Scarecrow", cost: 10, rate: 0.5, owned: 0 },
-  { name: "AutoPicker", cost: 20, rate: 1, owned: 0 },
+  { name: "Sprinkler", cost: 5, passRate: 0.1, clickRate: 0, owned: 0 },
+  { name: "Scarecrow", cost: 10, passRate: 0.5, clickRate: 0, owned: 0 },
+  { name: "Gardener", cost: 30, passRate: 1, clickRate: 0, owned: 0 },
 ];
 
 function getRate(): number {
-  return passiveUpgrades.reduce((sum, u) => sum + u.owned * u.rate, 0);
+  return passiveUpgrades.reduce((sum, u) => sum + u.owned * u.passRate, 0);
 }
 
 //number added to mouse click on image
