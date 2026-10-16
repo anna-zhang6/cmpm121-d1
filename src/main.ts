@@ -55,14 +55,6 @@ const passiveUpgrades: PassiveUpgrade[] = [
     textStr: "To avoid the thorns.",
   },
   {
-    name: "Scarecrow",
-    cost: 10,
-    passRate: 0.1,
-    clickRate: 0,
-    owned: 0,
-    textStr: "Fly away birdie!",
-  },
-  {
     name: "Water Can",
     cost: 15,
     passRate: 0,
@@ -71,12 +63,20 @@ const passiveUpgrades: PassiveUpgrade[] = [
     textStr: "Help your flowers grow.",
   },
   {
+    name: "Scarecrow",
+    cost: 10,
+    passRate: 0.1,
+    clickRate: 0,
+    owned: 0,
+    textStr: "Fly away birdie!",
+  },
+  {
     name: "Sprinkler",
     cost: 20,
     passRate: 0.3,
     clickRate: 0,
     owned: 0,
-    textStr: "All the water eith none of the effort.",
+    textStr: "All the water with none of the effort.",
   },
   {
     name: "Gardner",
@@ -110,12 +110,15 @@ let petalCounter: number = 0;
 
 //button creation for passive upgrades
 for (const upgrade of passiveUpgrades) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "upgrade";
+
   const button = document.createElement("button");
   const text = document.createElement("p");
+  text.textContent = upgrade.textStr;
   upgrade.button = button;
-  upgrade.text = text;
-  text.innerHTML =
-    `${upgrade.textStr} ${upgrade.passRate} per sec ${upgrade.clickRate} per click<br>`;
+
+  text.innerHTML = `${upgrade.textStr}`;
 
   button.addEventListener("click", () => {
     petalCounter -= upgrade.cost;
@@ -124,8 +127,8 @@ for (const upgrade of passiveUpgrades) {
     clickBoost += upgrade.clickRate;
   });
 
-  buttonContainer.append(button);
-  textContainer.append(text);
+  wrapper.append(button, text);
+  buttonContainer.append(wrapper);
 }
 
 // flower animation derived from setInterval earlier on
@@ -155,15 +158,21 @@ function autoClick(now: number) {
 requestAnimationFrame(autoClick);
 
 //updating text
+
+function describeEffect(u: PassiveUpgrade): string {
+  const parts: string[] = [];
+  if (u.clickRate > 0) parts.push(`+${u.clickRate} per click`);
+  if (u.passRate > 0) parts.push(`+${u.passRate} per sec`);
+  return parts.join(", ");
+}
+
 function updateText() {
   currentPetals.textContent = petalCounter.toFixed(1) + " petals";
-  // upgrade.disabled = petalCounter < upgradeList.gardner;
-  // upgrade.textContent =
-  //  `Gardener (+${clickBoost}/click): ${upgradeList.gardner} petals`;
 
   for (const upgrd of passiveUpgrades) {
-    upgrd.button!.textContent =
-      `${upgrd.name} (${upgrd.owned}): ${upgrd.cost} petals`;
+    upgrd.button!.textContent = `${upgrd.name} (${upgrd.owned})\n${
+      describeEffect(upgrd)
+    }\n${upgrd.cost} petals`;
     upgrd.button!.disabled = petalCounter < upgrd.cost;
   }
 

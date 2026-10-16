@@ -53,6 +53,10 @@ body {
   transition: background 0.15s, color 0.15s;
 }
 
+#app button {
+  white-space: pre-line;
+}
+
 #app button:hover:not(:disabled) {
   background: #5374d6;
   color: #fff;
@@ -61,4 +65,21 @@ body {
 #app button:disabled {
   opacity: 0.45;
   cursor: not-allowed;
+}
+
+#app .upgrade {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 160px;
+  gap: 4px;
+}
+
+#app .upgrade button {
+  width: 100%;
+}
+
+#app .upgrade p {
+  margin: 0;
+  font-size: 0.85rem;
 }
