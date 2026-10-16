@@ -7,7 +7,6 @@ import flowerUrl from "./assets/flowerbutton.png?no-inline";
 const app = document.querySelector<HTMLElement>("#app")!;
 
 const heading = document.createElement("h1");
-
 heading.textContent = "Flower Flow";
 
 const image = document.createElement("img");
@@ -32,12 +31,6 @@ const buttonContainer = document.createElement("div");
 
 //container for flavor text
 const textContainer = document.createElement("div");
-
-//button for the click-power upgrade
-const upgrade = document.createElement("button");
-
-//Flavor text
-const flavor = document.createElement("p");
 
 //data structure for passive upgrades (increase petals per second)
 interface PassiveUpgrade {
@@ -112,19 +105,17 @@ app.append(
   textContainer,
 );
 
-buttonContainer.append(upgrade);
-textContainer.append(flavor);
-
 //number of petals
 let petalCounter: number = 0;
 
 //button creation for passive upgrades
 for (const upgrade of passiveUpgrades) {
   const button = document.createElement("button");
-  //const text = document.createElement("p");
+  const text = document.createElement("p");
   upgrade.button = button;
-  // upgrade.text = text;
-  //text.textContent = upgrade.textStr;
+  upgrade.text = text;
+  text.innerHTML =
+    `${upgrade.textStr} ${upgrade.passRate} per sec ${upgrade.clickRate} per click<br>`;
 
   button.addEventListener("click", () => {
     petalCounter -= upgrade.cost;
@@ -134,7 +125,7 @@ for (const upgrade of passiveUpgrades) {
   });
 
   buttonContainer.append(button);
-  // textContainer.append(text);
+  textContainer.append(text);
 }
 
 // flower animation derived from setInterval earlier on
