@@ -3,10 +3,6 @@
 //@deno-types="./asset-url.d.ts"
 import "./style.css";
 import flowerUrl from "./assets/flowerbutton.png?no-inline";
-import gloveUrl from "./assets/garderngloves.png?no-inline";
-import scarecrowUrl from "./assets/scarecrow.png?no-inline";
-import watercanUrl from "./assets/watercan.png?no-inline";
-import sprinklerUrl from "./assets/sprinkler.png?no-inline";
 
 const app = document.querySelector<HTMLElement>("#app")!;
 
@@ -43,25 +39,16 @@ const upgrade = document.createElement("button");
 //Flavor text
 const flavor = document.createElement("p");
 
-//TODO make upgrades into data structure (inspired by Cassidy and Ray's pet dog game)
-const upgradeList = {
-  "gardengloves": gloveUrl,
-  "scarecrow": scarecrowUrl,
-  "watercan": watercanUrl,
-  "sprinkler": sprinklerUrl,
-  "gardner": 30,
-};
-
 //data structure for passive upgrades (increase petals per second)
 interface PassiveUpgrade {
   name: string;
   cost: number; // base price
   passRate: number; // petals/second added by each copy owned
   clickRate: number; //extra petals when clicked
-  owned: number;
-  textStr: string;
+  owned: number; //number owned
+  textStr: string; //string holding flavor text
   button?: HTMLButtonElement;
-  text?: HTMLParagraphElement;
+  text?: HTMLParagraphElement; //html that displays textStr
 }
 
 //defines upgrades + their properties
@@ -77,7 +64,7 @@ const passiveUpgrades: PassiveUpgrade[] = [
   {
     name: "Scarecrow",
     cost: 10,
-    passRate: 0.5,
+    passRate: 0.1,
     clickRate: 0,
     owned: 0,
     textStr: "Fly away birdie!",
@@ -93,7 +80,7 @@ const passiveUpgrades: PassiveUpgrade[] = [
   {
     name: "Sprinkler",
     cost: 20,
-    passRate: 0.1,
+    passRate: 0.3,
     clickRate: 0,
     owned: 0,
     textStr: "All the water eith none of the effort.",
@@ -101,7 +88,7 @@ const passiveUpgrades: PassiveUpgrade[] = [
   {
     name: "Gardner",
     cost: 30,
-    passRate: 1,
+    passRate: 0.6,
     clickRate: 0,
     owned: 0,
     textStr: "All the help you could ever need.",
@@ -113,7 +100,7 @@ function getRate(): number {
 }
 
 //number added to mouse click on image
-let clickBoost = 1;
+let clickBoost: number = 1;
 
 //makes style neater and easier to read
 app.append(
@@ -134,17 +121,20 @@ let petalCounter: number = 0;
 //button creation for passive upgrades
 for (const upgrade of passiveUpgrades) {
   const button = document.createElement("button");
-  const text = document.createElement("p");
+  //const text = document.createElement("p");
   upgrade.button = button;
-  upgrade.text = text;
-  text.textContent = upgrade.textStr;
+  // upgrade.text = text;
+  //text.textContent = upgrade.textStr;
+
   button.addEventListener("click", () => {
     petalCounter -= upgrade.cost;
     upgrade.owned++;
     upgrade.cost = Math.ceil(upgrade.cost * 1.5);
     clickBoost += upgrade.clickRate;
   });
+
   buttonContainer.append(button);
+  // textContainer.append(text);
 }
 
 // flower animation derived from setInterval earlier on
@@ -175,10 +165,10 @@ requestAnimationFrame(autoClick);
 
 //updating text
 function updateText() {
-  currentPetals.textContent = petalCounter.toFixed(2) + " petals";
-  upgrade.disabled = petalCounter < upgradeList.gardner;
-  upgrade.textContent =
-    `Gardener (+${clickBoost}/click): ${upgradeList.gardner} petals`;
+  currentPetals.textContent = petalCounter.toFixed(1) + " petals";
+  // upgrade.disabled = petalCounter < upgradeList.gardner;
+  // upgrade.textContent =
+  //  `Gardener (+${clickBoost}/click): ${upgradeList.gardner} petals`;
 
   for (const upgrd of passiveUpgrades) {
     upgrd.button!.textContent =
