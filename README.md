@@ -6,7 +6,9 @@ A Cookie Clicker type game about picking petals.
 ## Credits
 
 Game made by Anna Zhang and Jade Gardner.
-With help on requestAnimationFrame from Dipika Rajesh
+
+With help on requestAnimationFrame from Dipika Rajesh.
+
 Data Structure for upgrades discussed with Ray Butts and Cassidy Croy-Perret
 
 Images made by Jade Gardner
