@@ -35,4 +35,3 @@ We also condensed creating new upgrades such that you only have to add them to t
 ## Changing Code
 
 To add an upgrade go to src/main.ts, line 48 hold the passive upgarde data. To add your own upgrade match the format defined at line 36 and input it into the array (line 48) in the order you want it to appear in. The loop at line 112 will create the button with the data you gave it.
-
